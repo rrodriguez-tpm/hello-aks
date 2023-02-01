@@ -88,3 +88,56 @@ replicaset.apps/ingress-nginx-controller-6f7bd4bcfb   1         1         1     
 
 ### Setup DNS using the EXTERNAL-IP shown by the load balancer
 
+### Setup Let's Encrypt issuer:
+```
+❯ kubectl apply -f cert-issuer-nginx-ingress.yaml
+clusterissuer.cert-manager.io/letsencrypt-cluster-issuer created
+
+❯ kubectl describe clusterissuer letsencrypt-cluster-issuer
+```
+
+### Deploy the application
+```
+❯ kubectl apply -f deployment-app.yaml
+deployment.apps/example-deploy created
+
+❯ kubectl apply -f service-app.yaml
+service/example-service created
+
+❯ kubectl get pods
+NAME                              READY   STATUS    RESTARTS   AGE
+example-deploy-747dcf9779-tfqmd   1/1     Running   0          68s
+example-deploy-747dcf9779-zx5xw   1/1     Running   0          68s
+```
+
+### Point the ingress controller to the app. Edit ingress.yaml and replace "<your.dns.com>" with your hostname
+```
+❯ kubectl apply -f ingress.yaml
+ingress.networking.k8s.io/example-app created
+
+❯ kubectl get services
+NAME              TYPE           CLUSTER-IP     EXTERNAL-IP      PORT(S)        AGE
+example-service   LoadBalancer   10.0.225.247   20.106.106.234   80:32478/TCP   14m
+kubernetes        ClusterIP      10.0.0.1       <none>           443/TCP        13h
+```
+
+### Set up certificate
+### Edit the certificate.yaml by updating the dns name
+```
+❯ kubectl apply -f certificate.yaml
+certificate.cert-manager.io/example-app created
+```
+
+### Verify that the certificate is created successfully
+```
+❯ kubectl describe certificate example-app
+```
+
+### Check the secret, you should see the type kubernetes.io/tls
+```
+❯ kubectl get secret
+NAME              TYPE                DATA   AGE
+example-app-tls   kubernetes.io/tls   2      131m
+```
+
+### Test browsing to the DNS name
