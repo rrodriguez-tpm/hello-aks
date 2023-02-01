@@ -1,4 +1,4 @@
-## Create an AKS cluser using Terraform
+## Create an AKS cluster using Terraform
 ```
 ❯ terraform init
 
