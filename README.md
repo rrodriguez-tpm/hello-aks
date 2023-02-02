@@ -1,4 +1,6 @@
-## Create an AKS cluster using Terraform
+# Hello AKS - Deploying a secured website
+
+### Create an AKS cluster using Terraform
 ```
 ❯ terraform init
 
@@ -26,7 +28,7 @@ aks-default-30253914-vmss000000   Ready    agent   24m   v1.24.6
 aks-default-30253914-vmss000001   Ready    agent   24m   v1.24.6
 ```
 
-## Install Cert-Manager using helm
+### Install Cert-Manager using helm
 ```
 ❯ helm repo add jetstack https://charts.jetstack.io
 
@@ -60,7 +62,7 @@ replicaset.apps/cert-manager-cainjector-7f694c4c58   1         1         1      
 replicaset.apps/cert-manager-webhook-7cd8c769bb      1         1         1       72s
 ```
 
-## Create an ingress controller
+### Create an ingress controller
 ```
 ❯ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
