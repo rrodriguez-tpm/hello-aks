@@ -26,10 +26,13 @@ spec:
     spec:
       containers:
       - name: example-app
-        image: aimvector/python:1.0.4
+        image: mcr.microsoft.com/azuredocs/aks-helloworld:v1
         imagePullPolicy: Always
         ports:
-        - containerPort: 5000
+        - containerPort: 80
+        env:
+        - name: TITLE
+          value: "Pharmacy Center on Azure Kubernetes Service (AKS)"
         # livenessProbe:
         #   httpGet:
         #     path: /status
